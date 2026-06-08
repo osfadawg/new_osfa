@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     
     'info_home',
-    'models',
+    'library.apps.LibraryConfig',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +130,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+
+AUTH_USER_MODEL = 'library.OsfaUser'
