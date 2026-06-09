@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<script>
+    fetch('/api/example/')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+
+        let container = document.getElementById('data');
+        data.forEach(item => {
+            container.innerHTML += `<p>${item.name}</p>`;
+        });
+    });
+</script>
+
+<div id="data"></div>
+
+
+{% endblock %}

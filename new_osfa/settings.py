@@ -136,3 +136,12 @@ LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 
 AUTH_USER_MODEL = 'library.OsfaUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', # Everything requires login!
+    ]
+}

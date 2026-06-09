@@ -22,3 +22,16 @@ class OsfaUser(AbstractUser):
     extra_field = models.CharField(max_length=100, blank=True)
     department = models.ForeignKey(OsfaDepartment, on_delete=models.CASCADE, null=True, blank=True, related_name="users")  
      
+class OsfaRequests(models.Model):
+    number = models.IntegerField(unique=True, null=False)
+    request_date = models.DateField(null=False)
+    subject = models.CharField(max_length=256, null=False)
+    status = models.CharField(max_length=32, null=True)
+    priority = models.CharField(max_length=32, null=True)
+    source = models.CharField(max_length=32, null=True)
+    program = models.CharField(max_length=128, null=True)
+    department = models.CharField(max_length=32, null=True)
+    deadline = models.CharField(max_length=32, null=True)
+    comment = models.TextField(null=True)
+    complete_date = models.DateField(null=True)
+    delete_date = models.DateTimeField(null=True)

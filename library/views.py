@@ -1,33 +1,44 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import ExampleModel
-from .serializers import ExampleModelSerializer
+from rest_framework import status
 
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from . import models
+from . import serializers 
 
 # Create your views here.
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def example_list(request):
-     data = ExampleModel.objects.all()
-     serializer = ExampleModelSerializer(data, many=True)
-     return Response(serializer.data)
-
-def login_view(request):
-     if request.method == 'POST':
-          username = request.POST.get('username')
-          password = request.POST.get('password')
+     if request.method == 'GET':          
+          data = models.ExampleModel.objects.all()
+          serializer = serializers.ExampleModelSerializer(data, many=True)
+          return Response(serializer.data)
+     
+     elif request.method == 'POST':
+          serializer = serializers.ExampleModelSerializer(data=request.data)
           
-          user = authenticate(request, username=username, password=password)
+          if serializer.is_valid():
+               serializer.save()
+               return Response(serializer.data, status=status.HTTP_201_CREATED)
           
-          if user is not None:
-               login(request=request, user=user)
-               return redirect('/')
-          else:
-               return render(request, 'registration/login.html', {'error': 'Invalid Credentials'})
+          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+     
+     
 
-     return render(request, 'registration/login.html')
-
-def logout_view(request):
-     logout(request)
-     return redirect('/login/')
+@api_view(['GET', 'PUT', 'PATCH'])
+def example_detail(request, pk):
+     item = get_object_or_404(models.ExampleModel, pk=pk)
+     
+     if request.method == 'GET':          
+          serializer = serializers.ExampleModelSerializer(item)
+          return Response(serializer.data)
+     
+     elif request.method in ['PUT', 'PATCH']:
+          partial = (request.method == 'PATCH')
+          serializer = serializers.ExampleModelSerializer(item, data=request.data, partial=partial)
+          
+          if serializer.is_valid():
+               serializer.save()
+               return Response(serializer.data)
+          
+          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
