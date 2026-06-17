@@ -7,14 +7,14 @@ class OsfaUserAdmin(UserAdmin):
      fieldsets = (
           *UserAdmin.fieldsets,
           (
-               'Custom Fields', {'fields': ('department',)}
+               'Custom Fields', {'fields': ('department', 'isRequestor', 'isRequestorAdmin',)}
           ),
      )
      
      add_fieldsets = (
           *UserAdmin.add_fieldsets,
           (
-               'Custom Fields', {'fields': ('department',)}
+               'Custom Fields', {'fields': ('department', 'isRequestor', 'isRequestorAdmin')}
           )
      )
 

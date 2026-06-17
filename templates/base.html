@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'icons/bootstrap-icons.css' %}">
     
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet">    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -60,6 +63,11 @@
             </div>
         </nav>
 
+        <!-- jQuery (Required for Bootstrap Datepicker) -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <!-- Bootstrap Datepicker JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
         <div id="main">
             {% block content %}
@@ -67,10 +75,10 @@
         </div>
     </div>
 
-
     <!-- Bootstrap JS -->
     <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
     
+
     <!-- Custom JS -->
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>

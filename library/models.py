@@ -16,11 +16,13 @@ class OsfaDepartment(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
     
     def __str__(self):
-        return self.name
+        return self.name            
     
 class OsfaUser(AbstractUser):
     extra_field = models.CharField(max_length=100, blank=True)
     department = models.ForeignKey(OsfaDepartment, on_delete=models.CASCADE, null=True, blank=True, related_name="users")  
+    isRequestor = models.BooleanField(null=False, default=False)
+    isRequestorAdmin = models.BooleanField(null=False, default=False)
      
 class OsfaRequests(models.Model):
     number = models.IntegerField(unique=True, null=False)
@@ -35,3 +37,4 @@ class OsfaRequests(models.Model):
     comment = models.TextField(null=True)
     complete_date = models.DateField(null=True)
     delete_date = models.DateTimeField(null=True)
+    approved = models.BooleanField(default=False)

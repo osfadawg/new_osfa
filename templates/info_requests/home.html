@@ -4,20 +4,92 @@
 
 {% block content %}
 
-<script>
-    fetch('/api/example/')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
+<div class="container">
+    <h2>All Requests</h2>
+    <p>
+        <a href="#">+ Add New Item</a>
+    </p>
 
-        let container = document.getElementById('data');
-        data.forEach(item => {
-            container.innerHTML += `<p>${item.name}</p>`;
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>S</th>
+                <th>Number</th>
+                <th>Subject</th>
+                <th>Req DL Comp</th>
+                <th>P</th>
+                <th>Source</th>
+                <th>Department</th>
+                <th>A</th>
+                <th colspan="2">
+                    <a href="#"><i class="bi bi-plus-circle-fill fs-2"></i></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr>
+                <td colspan="9">
+                    Loading items..
+                </td>
+            <tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        const tableBody = document.getElementById('table-body');
+
+        fetch('/api/requests', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(async response => {
+            if(!response.ok){
+                throw new Error('Failed to fetch data.');
+            }            
+            const data = await response.json();
+
+            tableBody.innerHTML = '<table>';
+
+            if(data.length === 0){
+                tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No items found.</td></tr>';
+                return;
+            }
+
+            data.forEach(item => {
+                const id = item.id;
+                const rowHtml = `
+                    <tr>
+                        <td>${item.status}</td>
+                        <td>${item.number}</td>
+                        <td>${item.subject}</td>
+                        <td>${item.request_date} ${item.delete_date} ${item.complete_date}</td>
+                        <td>${item.priority}</td>
+                        <td>${item.source}</td>
+                        <td>${item.department}</td>
+                        <td>${item.approved}</td>
+                        <td>
+                            <a href="/requests/form/view/${id}"><i class="bi bi-binoculars-fill fs-2"></i></a>
+                            <a href="#"><i class="bi bi-pencil-fill fs-2"></i></a>
+                            <a href="#"><i class="bi bi-trash-fill fs-2"></i></a>
+                            <a href="#"><i class="bi bi-envelope-fill fs-2"></i></a>
+                        </td>
+                        <td>
+                            Pending
+                        </td>
+                    </tr>
+                `
+                tableBody.innerHTML += rowHtml;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            tableBody.innerHTML = '<p class="error">Could not load items at this time.</p>'
         });
     });
 </script>
-
-<div id="data"></div>
-
 
 {% endblock %}
