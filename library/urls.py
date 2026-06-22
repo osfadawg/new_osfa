@@ -8,6 +8,7 @@ urlpatterns = [
     
     #   QUERIES
     path('users/requestors', views.user_requestors_list, name='users-requestors-list'),
+    path('users/programmers', views.user_programmers_list, name='users-programmers-list'),
     
     #   LISTS
     path('example/', views.example_list, name='example-list'),

@@ -8,11 +8,12 @@
      <form>
           {% csrf_token %}
           <div class="row">
-               <div class="col-md-10">
+               <div class="col-md-8">
                     <div class="row pt-2">
                          <div class="col-md-11">
-                              <label for="inputSubject">Subject</label>
+                              <label for="inputSubject" class="fw-bold">Subject <i class="bi bi-asterisk link-danger"></i></label>
                               <input type="text" class="form-control" id="inputSubject"/>
+                              
                          </div>
                          <div class="col-md-1">
                               <label for="linkViewLogs">View Log</label>
@@ -20,33 +21,65 @@
                          </div>               
                     </div>
                     <div class="row pt-2">
-                         <div class="col-md-4">
-                              <label for="inputNumber">Number</label>
+                         <div class="col-md-2">
+                              <label for="inputNumber" class="fw-bold">Number <i class="bi bi-asterisk link-danger"></i></label>
                               <input type="text" class="form-control" id="inputNumber" />
                          </div>
-                         <div class="col-md-2">
-                              <label for="inputStatus">Status</label>
-                              <select class="form-select" id="inputStatus">
-                                   <option value="">Select Status</option>
-                                   <option value="C">C</option>
-                                   <option value="P">P</option>
-                                   <option value="V">V</option>
-                                   <option value="W">W</option>                                                                                                    
-                              </select>
+                         <div class="col-md-3">
+                              <label for="inputDeadline" class="fw-bold">Deadline <i class="bi bi-asterisk link-danger"></i></label>
+                              <input type="text" class="form-control" id="inputDeadline" placeholder="YYYY-MM-DD" autocomplete="off">                      
+                         </div>
+                         <div class="col-md-1 pt-3 text-danger fw-bold">
+                              OR
+                         </div>
+                         <div class="col-md-6 pt-3">
+                              <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="radioDeadline" id="radioAsap"/>
+                                   <label class="form-check-label" for="radioAsap">
+                                        ASAP
+                                   </label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                   <input class="form-check-input" type="radio" name="radioDeadline" id="radioAnytime">
+                                   <label class="form-check-label" for="radioAnytime">
+                                        ANYTIME
+                                   </label>
+                              </div>                                       
+                         </div>
+                    </div>
+                    <div class="row pt-2">
+                         <div class="col-md-3">
+                              <label for="inputRequestDate" class="fw-bold">Request Date <i class="bi bi-asterisk link-danger"></i></label>
+                              <input type="text" class="form-control" id="inputRequestDate" placeholder="YYYY-MM-DD" autocomplete="off">
                          </div>
                          <div class="col-md-2">
-                              <label for="inputPriority">Priority</label>
+                              <label for="inputPriority" class="fw-bold">Priority <i class="bi bi-asterisk link-danger"></i></label>
                               <select class="form-select" id="inputPriority">
-                                   <option value="">Select Priority</option>
+                                   <option value="">Priority</option>
                                    <option value="H">H</option>
                                    <option value="L">L</option>
                                    <option value="M">M</option>
                               </select>                    
                          </div>
+                         <div class="col-md-3">
+                              <label for="inputSource" class="fw-bold">Source <i class="bi bi-asterisk link-danger"></i></label>
+                              <select class="form-select" id="inputSource">
+                                   <option value="">Source</option>
+                                   <option value="Banner">Banner</option>
+                                   <option value="BOR">BOR</option>
+                                   <option value="CL">CL</option>
+                                   <option value="F&S">F&S</option>
+                                   <option value="FED">FED</option>
+                                   <option value="OSFA">OSFA</option>
+                                   <option value="OTH">OTH</option>
+                                   <option value="ST">ST</option>
+                                   <option value="UGA">UGA</option>
+                              </select>
+                         </div>                         
                          <div class="col-md-4">
-                              <label for="inputDepartment">Department</label>
+                              <label for="inputDepartment" class="fw-bold">Department <i class="bi bi-asterisk link-danger"></i></label>
                               <select class="form-select" id="inputDepartment">
-                                   <option value="">Select Department</option>
+                                   <option value="">Department</option>
                                    <option value="Client Services">Client Services</option>
                                    <option value="Compliance">Compliance</option>
                                    <option value="Data Entry">Data Entry</option>
@@ -66,61 +99,47 @@
                                    <option value="Technoworld">Technoworld</option>
                                    <option value="Verification">Verification</option>
                               </select>                     
-                         </div>                                                                           
+                         </div>
                     </div>
                     <div class="row pt-2">
-                         <div class="col-md-3">
-                              <label for="inputRequestDate">Request Date</label>
-                              <input type="text" class="form-control" id="inputRequestDate" placeholder="YYYY-MM-DD" autocomplete="off">
-                         </div>
-                         <div class="col-md-3">
-                              <label for="inputDeadline">Deadline</label>
-                              <!-- <input type="text" class="form-control" id="inputDeadline" placeholder="YYYY-MM-DD" autocomplete="off"> -->
-                              <input type="text" class="form-control" id="inputDeadline" />
-                         </div>
-                         <div class="col-md-3">
-                              <label for="inputCompleteDate">Complete Date</label>
-                              <input type="text" class="form-control" id="inputCompleteDate" placeholder="YYYY-MM-DD" autocomplete="off">
-                         </div>
-                         <div class="col-md-3">
-                              <label for="inputDeleteDate">Delete Date</label>
-                              <input type="text" class="form-control" id="inputDeleteDate" placeholder="YYYY-MM-DD" autocomplete="off">
-                         </div>               
-                    </div>
-                    <div class="row pt-2">
-                         <div class="col-md-10">
+                         <div class="col-md-6">
                               <label for="inputProgram">Program</label>
                               <input type="text" class="form-control" id="inputProgram" />
                          </div>    
                          <div class="col-md-2">
-                              <label for="inputSource">Source</label>
-                              <select class="form-select" id="inputSource">
-                                   <option value="">Select Source</option>
-                                   <option value="Banner">Banner</option>
-                                   <option value="BOR">BOR</option>
-                                   <option value="CL">CL</option>
-                                   <option value="F&S">F&S</option>
-                                   <option value="FED">FED</option>
-                                   <option value="OSFA">OSFA</option>
-                                   <option value="OTH">OTH</option>
-                                   <option value="ST">ST</option>
-                                   <option value="UGA">UGA</option>
+                              <label for="inputStatus">Status</label>
+                              <select class="form-select" id="inputStatus">
+                                   <option value="">Status</option>
+                                   <option value="C">C</option>
+                                   <option value="P">P</option>
+                                   <option value="V">V</option>
+                                   <option value="W">W</option>                                                                                                    
                               </select>
+                         </div>                         
+                         <div class="col-md-4">
+                              <label for="inputCompleteDate">Complete Date</label>
+                              <input type="text" class="form-control" id="inputCompleteDate" placeholder="YYYY-MM-DD" autocomplete="off">
                          </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row pt-2" id="containerDeleteDate">
+                         <div class="col-md-4">
+                              <label for="inputDeleteDate">Delete Date</label>
+                              <input type="text" class="form-control" id="inputDeleteDate" placeholder="YYYY-MM-DD" autocomplete="off">
+                         </div>
+                    </div>
+                    <div class="row pt-2" id="containerApprovalAuthority">
                          <div class="col-md-12">
                               <label for="inputApprovalAuthority">Approval Authority</label>
                               <input type="text" class="form-control" id="inputApprovalAuthority" />
                          </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row pt-2" id="containerRequestingUsers">
                          <div class="col-md-12">
                               <label for="inputRequestingUsers">Requesting Users</label>
                               <input type="text" class="form-control" id="inputRequestingUsers" />
                          </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row pt-2" id="containerProgrammers">
                          <div class="col-md-12">
                               <label for="inputProgrammers">Programmers</label>
                               <input type="text" class="form-control" id="inputProgrammers" />
@@ -142,8 +161,13 @@
                <div class="col-md-2" id="checkRequestingUsers">
                     <div class="row pt-2">
                          Requesting Users
-                    </div>                    
-               </div>          
+                    </div>
+               </div>
+               <div class="col-md-2" id="checkRequestingProgrammers">
+                    <div class="row pt-2">
+                         Programmers
+                    </div>
+               </div>               
           </div> 
           <div class="row">
                <div class="col-12 d-flex justify-content-end">
@@ -156,12 +180,24 @@
 
 <script>
      const action = "{{ action }}";
-     const requestId = {{ id }};
+     {% if id %}
+     const requestId = "{{ id }}";
+     {% else %}
+     const requestId = null;
+     {% endif %}
+
+     {% if new_number %}
+     const new_number = "{{ new_number }}"
+     {% else %}
+     const new_number = null
+     {% endif %}
 
      console.log("Action:", action);
      console.log("ID:", requestId);
+     console.log("New Number:", new_number);
 
      getRequestors();
+     getProgrammers();
 
      inputSubject = document.getElementById("inputSubject");
      inputNumber = document.getElementById("inputNumber");
@@ -174,16 +210,29 @@
      inputRequestingUsers = document.getElementById("inputRequestingUsers");
      inputProgrammers = document.getElementById("inputProgrammers");
      inputSynopsis = document.getElementById("inputSynopsis");
-
      inputDeadline = document.getElementById("inputDeadline");
+
+     containerApprovalAuthority = document.getElementById("containerApprovalAuthority");
+     containerRequestingUsers = document.getElementById("containerRequestingUsers");
+     containerProgrammers = document.getElementById("containerProgrammers");
+     containerDeleteDate = document.getElementById("containerDeleteDate");
 
      inputRequestDate = $('#inputRequestDate');
      inputCompleteDate = $('#inputCompleteDate');
      inputDeleteDate = $('#inputDeleteDate');
 
+     //   ALWAYS READONLY
+     inputNumber.setAttribute("readonly", "readonly");
+     inputApprovalAuthority.setAttribute("readonly", "readonly");
+
      switch(action) {
           case "add":
+               inputNumber.value = new_number
                //   SHOWS BLANK FORM
+               containerApprovalAuthority.style.display = 'none';
+               containerRequestingUsers.style.display = 'none';
+               containerProgrammers.style.display = 'none';
+               containerDeleteDate.style.display = 'none';
                break;
           case "edit":
                loadEdit(requestId)
@@ -206,18 +255,15 @@
           console.log("Viewing", id);
           getRequest(id);
 
-          inputSubject.setAttribute("readonly", "readonly");
-          inputNumber.setAttribute("readonly", "readonly");
+          inputSubject.setAttribute("readonly", "readonly");          
           inputStatus.setAttribute("disabled", "true");
           inputPriority.setAttribute("disabled", "true");
           inputSource.setAttribute("disabled", "true");
           inputDepartment.setAttribute("disabled", "true");
           inputProgram.setAttribute("readonly", "readonly");
-          inputApprovalAuthority.setAttribute("readonly", "readonly");
           inputRequestingUsers.setAttribute("readonly", "readonly");
           inputProgrammers.setAttribute("readonly", "readonly");
           inputSynopsis.setAttribute("readonly", "readonly");
-
           inputDeadline.setAttribute("readonly", "readonly");
 
           inputRequestDate.prop('disabled', true)
@@ -272,7 +318,7 @@
           })
           .then(async response => {
                if(!response.ok){
-                    throw new Error('Failed to fetch requestors')
+                    throw new Error('Failed to fetch requestors.')
                }
                requestors = await response.json();
                console.log(requestors);
@@ -289,8 +335,35 @@
                });
 
           });
-
      }
+
+     function getProgrammers(){
+          fetch('/api/users/programmers', {
+               method: 'GET',
+               headers: {
+                    'Content-Type': 'application/json'
+               }
+          })
+          .then(async response => {
+               if(!response.ok){
+                    throw new Error('Failed to fetch programmers.')
+               }
+               requestors = await response.json();
+               console.log(requestors);
+
+               container = document.getElementById('checkRequestingProgrammers');
+
+               requestors.forEach(item => {
+                    container.innerHTML += `<div class="form-check">
+                         <input class="form-check-input" type="checkbox" value="" id="programmerCheck_${item.id}" />
+                         <label class="form-check-label" for="programmerCheck_${item.id}">
+                              ${item.first_name} ${item.last_name}
+                         </label>
+                    </div>`
+               });
+
+          });
+     }     
 
      $(document).ready(function () {          
           $('#inputRequestDate').datepicker({
@@ -299,13 +372,11 @@
                todayHighlight: true    // Highlight today's date
           });
 
-          /*
           $('#inputDeadline').datepicker({
                format: 'yyyy-mm-dd',   // Date format
                autoclose: true,        // Close picker after selection
                todayHighlight: true    // Highlight today's date
           });
-          */
 
           $('#inputCompleteDate').datepicker({
                format: 'yyyy-mm-dd',   // Date format

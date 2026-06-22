@@ -18,11 +18,21 @@ class OsfaDepartment(models.Model):
     def __str__(self):
         return self.name            
     
+    
+class OsfaRequestUser(models.Model):
+    user = models.ForeignKey("OsfaUser", on_delete=models.CASCADE)
+    request = models.ForeignKey("OsfaRequests", on_delete=models.CASCADE)
+    request_signed = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('user', 'request')
+
 class OsfaUser(AbstractUser):
     extra_field = models.CharField(max_length=100, blank=True)
-    department = models.ForeignKey(OsfaDepartment, on_delete=models.CASCADE, null=True, blank=True, related_name="users")  
-    isRequestor = models.BooleanField(null=False, default=False)
-    isRequestorAdmin = models.BooleanField(null=False, default=False)
+    department = models.ForeignKey(OsfaDepartment, on_delete=models.CASCADE, null=True, blank=True, related_name="users", verbose_name='Department')  
+    isRequestor = models.BooleanField(null=False, default=False, verbose_name='Is Requestor')
+    isRequestorAdmin = models.BooleanField(null=False, default=False, verbose_name='Is Requestor Admin')
+    isRequestorProgrammer = models.BooleanField(null=False, default=False, verbose_name='Is Requestor Programmer')
      
 class OsfaRequests(models.Model):
     number = models.IntegerField(unique=True, null=False)
@@ -38,3 +48,11 @@ class OsfaRequests(models.Model):
     complete_date = models.DateField(null=True)
     delete_date = models.DateTimeField(null=True)
     approved = models.BooleanField(default=False)
+    
+    users = models.ManyToManyField(
+        OsfaUser,
+        through='OsfaRequestUser',
+        related_name='requests'
+    )
+
+    

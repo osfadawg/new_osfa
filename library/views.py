@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from . import models
-from . import serializers 
+from . import serializers
 
 # Create your views here.
 @api_view(['GET', 'POST'])
@@ -60,5 +60,11 @@ def requests_detail(request, pk):
 @api_view(['GET'])
 def user_requestors_list(request):
      data = models.OsfaUser.objects.filter(isRequestor=1).order_by('first_name')
+     serializer = serializers.OsfaUserSerializer(data, many=True)
+     return Response(serializer.data)
+
+@api_view(['GET'])
+def user_programmers_list(request):
+     data = models.OsfaUser.objects.filter(isRequestorProgrammer=1).order_by('first_name')
      serializer = serializers.OsfaUserSerializer(data, many=True)
      return Response(serializer.data)
