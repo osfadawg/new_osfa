@@ -55,4 +55,18 @@ class OsfaRequests(models.Model):
         related_name='requests'
     )
 
-    
+class OsfaRequestsAttachments(models.Model):
+    request = models.ForeignKey(
+        OsfaRequests,
+        on_delete=models.CASCADE,
+        related_name='requests_attachments'
+    )
+    uploaded_by = models.ForeignKey(
+        OsfaUser,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    original_name = models.CharField(max_length=255)
+    file = models.FileField(upload_to="osfa_requests/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)

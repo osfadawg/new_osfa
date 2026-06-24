@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="pt-3 container-fluid">
-     <form>
+     <form enctype="multipart/form-data" method="POST" id="formRequest">
           {% csrf_token %}
           <div class="row">
                <div class="col-md-8">
@@ -25,14 +25,14 @@
                               <label for="inputNumber" class="fw-bold">Number <i class="bi bi-asterisk link-danger"></i></label>
                               <input type="text" class="form-control" id="inputNumber" />
                          </div>
-                         <div class="col-md-3">
+                         <div class="col-md-4">
                               <label for="inputDeadline" class="fw-bold">Deadline <i class="bi bi-asterisk link-danger"></i></label>
-                              <input type="text" class="form-control" id="inputDeadline" placeholder="YYYY-MM-DD" autocomplete="off">                      
+                              <input type="text" class="form-control" id="inputDeadline" placeholder="YYYY-MM-DD" autocomplete="off">               
                          </div>
                          <div class="col-md-1 pt-3 text-danger fw-bold">
                               OR
                          </div>
-                         <div class="col-md-6 pt-3">
+                         <div class="col-md-4 pt-3">
                               <div class="form-check form-check-inline">
                                    <input class="form-check-input" type="radio" name="radioDeadline" id="radioAsap"/>
                                    <label class="form-check-label" for="radioAsap">
@@ -48,7 +48,7 @@
                          </div>
                     </div>
                     <div class="row pt-2">
-                         <div class="col-md-3">
+                         <div class="col-md-4">
                               <label for="inputRequestDate" class="fw-bold">Request Date <i class="bi bi-asterisk link-danger"></i></label>
                               <input type="text" class="form-control" id="inputRequestDate" placeholder="YYYY-MM-DD" autocomplete="off">
                          </div>
@@ -76,7 +76,7 @@
                                    <option value="UGA">UGA</option>
                               </select>
                          </div>                         
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                               <label for="inputDepartment" class="fw-bold">Department <i class="bi bi-asterisk link-danger"></i></label>
                               <select class="form-select" id="inputDepartment">
                                    <option value="">Department</option>
@@ -152,10 +152,13 @@
                          </div>               
                     </div>
                     <div class="row pt-2">
-                         <div class="col-md-12">
-                              <label for="inputAttachments">Attachments</label>
-                              [[Attachments]]
-                         </div>               
+                         <div class="col-md-4">
+                              <label for="inputAttachments">Attachments</label>                              
+                              <input type="file" name="attachments" id="fileInput" class="form-control" multiple />
+                         </div>
+                         <div class="col-md-8">
+                             <ul id="fileList" class="pt-2"></ul> 
+                         </div>                         
                     </div>
                </div>
                <div class="col-md-2" id="checkRequestingUsers">
@@ -171,7 +174,7 @@
           </div> 
           <div class="row">
                <div class="col-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" >Save</button>
+                    <button type="submit" class="btn btn-success" >Save</button>
                </div>               
           </div>         
      </form>
@@ -191,13 +194,20 @@
      {% else %}
      const new_number = null
      {% endif %}
+     let allFiles = [];
 
      console.log("Action:", action);
      console.log("ID:", requestId);
      console.log("New Number:", new_number);
+     console.log("User ID", "{{user.id}}")     
+     console.log("User First Name", "{{user.first_name}}")
+     console.log("User Last Name", "{{user.last_name}}")
+     console.log("User Is Requestor", "{{user.isRequestor}}")
 
      getRequestors();
      getProgrammers();
+
+     formRequest = document.getElementById("formRequest");
 
      inputSubject = document.getElementById("inputSubject");
      inputNumber = document.getElementById("inputNumber");
@@ -217,6 +227,9 @@
      containerProgrammers = document.getElementById("containerProgrammers");
      containerDeleteDate = document.getElementById("containerDeleteDate");
 
+     fileInput = document.getElementById("fileInput");
+     fileList = document.getElementById("fileList");
+
      inputRequestDate = $('#inputRequestDate');
      inputCompleteDate = $('#inputCompleteDate');
      inputDeleteDate = $('#inputDeleteDate');
@@ -233,6 +246,9 @@
                containerRequestingUsers.style.display = 'none';
                containerProgrammers.style.display = 'none';
                containerDeleteDate.style.display = 'none';
+               
+               clearErrors();
+
                break;
           case "edit":
                loadEdit(requestId)
@@ -245,6 +261,15 @@
                break;
           default:
                console.error("Invalid action");
+     }
+
+     function clearErrors(){
+          inputSubject.classList.remove('border', 'border-3', 'border-danger');
+          inputDeadline.classList.remove('border', 'border-3', 'border-danger');
+          inputRequestDate.removeClass('border border-3 border-danger'); // JQUERY ELEMENT
+          inputPriority.classList.remove('border', 'border-3', 'border-danger');
+          inputSource.classList.remove('border', 'border-3', 'border-danger');
+          inputDepartment.classList.remove('border', 'border-3', 'border-danger');
      }
 
      function loadEdit(id) {
@@ -325,13 +350,23 @@
 
                container = document.getElementById('checkRequestingUsers');
 
-               requestors.forEach(item => {
-                    container.innerHTML += `<div class="form-check">
-                         <input class="form-check-input" type="checkbox" value="" id="requestorCheck_${item.id}" />
-                         <label class="form-check-label" for="requestorCheck_${item.id}">
-                              ${item.first_name} ${item.last_name}
-                         </label>
-                    </div>`
+               requestors.forEach(item => {                    
+                    //   IF LOGGED IN USER IS A "REQUESTOR" OR "REQUESTOR ADMIN" AND ACTION IS "ADD" CHECK AND DISABLE CHECKBOX
+                    if(item.id == {{ user.id }} && ("{{ user.isRequestor }}" == "True" || "{{ user.isRequestorAdmin }}" == "True" ) && "{{ action }}" == "add"){
+                         container.innerHTML += `<div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="requestorCheck_${item.id}" checked disabled/>
+                              <label class="form-check-label" for="requestorCheck_${item.id}">
+                                   ${item.first_name} ${item.last_name}
+                              </label>
+                         </div>`                         
+                    } else {
+                         container.innerHTML += `<div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="requestorCheck_${item.id}" />
+                              <label class="form-check-label" for="requestorCheck_${item.id}">
+                                   ${item.first_name} ${item.last_name}
+                              </label>
+                         </div>`
+                    }
                });
 
           });
@@ -363,7 +398,7 @@
                });
 
           });
-     }     
+     }
 
      $(document).ready(function () {          
           $('#inputRequestDate').datepicker({
@@ -389,7 +424,81 @@
                autoclose: true,        // Close picker after selection
                todayHighlight: true    // Highlight today's date
           });          
-     });    
+     });
+
+     //   ON CHANGE FOR FILE INPUT TO ADD MULTIPLE FILES
+     fileInput.addEventListener("change", event => {
+          const newFiles = Array.from(event.target.files);
+
+          allFiles = allFiles.concat(newFiles);
+          
+          renderFileList();
+
+          fileInput.value = "";
+     });
+
+     //   RENDER THE FILE(S) 
+     function renderFileList(){
+          fileList.innerHTML = "";
+
+          allFiles.forEach((file, index) => {
+               const li = document.createElement("li");
+               li.textContent = file.name;
+
+               const btn = document.createElement("i");
+               btn.className = "bi bi-x-circle-fill link-danger ps-4";
+
+               btn.onclick = () => {
+                    allFiles.splice(index, 1);
+                    renderFileList();
+               };
+
+               li.appendChild(btn);
+               fileList.appendChild(li);
+          });
+     }
+
+     //   SAVE REQUEST
+     formRequest.addEventListener("submit", event => {
+          clearErrors();
+          let hasErrors = false;
+          //   SUBJECT
+          if(!inputSubject || inputSubject.value.trim() === ""){               
+               hasErrors = true;
+               inputSubject.classList.add('border', 'border-3', 'border-danger');
+          }
+
+          if(!inputDeadline || inputDeadline.value.trim() === "" && (!radioAsap.checked && !radioAnytime.checked)){
+               hasErrors = true;
+               inputDeadline.classList.add('border', 'border-3', 'border-danger');
+          }
+
+          // JQUERY ELEMENT
+          if(!inputRequestDate || inputRequestDate.val().trim() === ""){
+               hasErrors = true;
+               inputRequestDate.addClass('border border-3 border-danger'); 
+          }
+
+          if(!inputPriority || inputPriority.value.trim() === ""){
+               hasErrors = true;
+               inputPriority.classList.add('border', 'border-3', 'border-danger');
+          }
+
+          if(!inputSource || inputSource.value.trim() === ""){
+               hasErrors = true;
+               inputSource.classList.add('border', 'border-3', 'border-danger');
+          }          
+
+          if(!inputDepartment || inputDepartment.value.trim() === ""){
+               hasErrors = true;
+               inputDepartment.classList.add('border', 'border-3', 'border-danger');
+          }  
+
+          if(hasErrors){
+               event.preventDefault();
+               return;
+          }
+     });
 </script>
 
 {% endblock %}

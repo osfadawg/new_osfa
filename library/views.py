@@ -41,11 +41,14 @@ def example_detail(request, pk):
           
           return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
      
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def requests_list(request):
-     data = models.OsfaRequests.objects.all().order_by('-request_date')
-     serializer = serializers.OsfaRequestsSerializer(data, many=True)
-     return Response(serializer.data)
+     if request.method == 'GET':
+          data = models.OsfaRequests.objects.all().order_by('-request_date')
+          serializer = serializers.OsfaRequestsSerializer(data, many=True)
+          return Response(serializer.data)
+     elif request.method == 'POST':
+          pass
 
 @api_view(['GET'])
 def requests_detail(request, pk):
